@@ -1,0 +1,15 @@
+{
+  "name": "codementor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "video.js": "^6.2.0",
+    "videojs-settings-menu": "0.0.2"
+  }
+}
