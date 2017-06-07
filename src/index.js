@@ -1,13 +1,6 @@
-import Vue from 'vue';
-import {App} from './app/app';
+import './app/components/settings-menu/settings-menu-button';
+import './app/components/settings-menu/settings-menu-item';
 
-new Vue({
-  el: '#r-boot',
-  data: {
-    message: 'hello world'
-  },
-  components: {
-    'app-component': App
-  }
-});
+require('./app/boot');
+
 

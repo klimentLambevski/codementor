@@ -14,7 +14,7 @@ module.exports = {
   module: {
     loaders: [
       {test: '/\.js$/', loader: 'vue-loader'},
-      {test: /\.js$/, loader: 'babel', query: {
+      {test: /\.js$/, exclude: [/node_modules\/(?!vue\/)/], loader: 'babel', query: {
         presets: ['es2015']
       }},
       // {test: /\.html$/, loader: 'raw'},
@@ -22,7 +22,7 @@ module.exports = {
     ]
   },
   resolve: {
-    // extensions: ['', '.js'],
+    extensions: ['', '.js'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
     }

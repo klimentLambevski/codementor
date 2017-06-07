@@ -1,5 +1,6 @@
 //npm libraries
-//@import "../node_modules/video.js/dist/video-js.min.css";
+@import "../node_modules/video.js/src/css/vjs";
 
 //local libraries
 @import 'styles/structure';
+@import 'app/components/settings-menu/settings-menu';
