@@ -9,6 +9,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "font-awesome": "^4.7.0",
+    "hls.js": "^0.7.9",
     "video.js": "^6.2.0",
     "videojs-settings-menu": "0.0.2",
     "vue": "^2.3.3"

@@ -111,13 +111,18 @@ class SettingsMenuItem extends MenuItem {
    * @method update
    */
   update() {
+    console.log(this.subMenu.controlText_);
     this.settingsSubMenuTitleEl_.innerHTML = this.subMenu.controlText_ + ':';
     this.settingsSubMenuEl_.appendChild(this.subMenu.menu.el_);
+    this.settingsSubMenuEl_.appendChild(videojs.dom.createEl('i', {
+      className: 'fa fa-arrow-left'
+    }));
 
     // Playback rate menu button doesn't get a vjs-selected class
     // or sets options_['selected'] on the selected playback rate.
     // Thus we get the submenu value based on the labelEl of playbackRateMenuButton
     if (this.subMenu instanceof playbackRateMenuButton) {
+      console.log(this.subMenu.playbackRates());
       this.settingsSubMenuValueEl_.innerHTML = this.subMenu.labelEl_.innerHTML;
     } else {
       // Loop trough the submenu items to find the selected child

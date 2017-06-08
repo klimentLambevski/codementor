@@ -6,6 +6,18 @@ export const Player = Vue.extend({
   mounted() {
     videojs(this.$el, {
       'playbackRates': [0.5, 1, 1.5, 2],
+      'qualityData': {
+        video: {
+          id: -1,
+          label: 'auto',
+          selected: true
+        }
+      },
+      plugins:{
+        qualityPickerPlugin: {
+
+        }
+      },
       controlBar: {
         children: {
           'playToggle':{},
@@ -19,12 +31,14 @@ export const Player = Vue.extend({
           'flexibleWidthSpacer':{},
           'progressControl':{},
 
+
           'settingsMenuButton': {
             entries : [
               'subtitlesButton',
               'playbackRateMenuButton'
             ]
           },
+
           'fullscreenToggle':{}
         }
       }

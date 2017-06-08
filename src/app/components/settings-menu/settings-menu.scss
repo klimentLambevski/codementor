@@ -1,8 +1,26 @@
 
 .video-js {
   .vjs-settings-sub-menu {
+    position: relative;
     .vjs-menu {
       display:block;
+      left: initial;
+      width: auto;
+      bottom: initial;
+      margin-bottom: 0;
+      height: 30px;
+      top: -1.2em;
+      .vjs-menu-content {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        right: 100%;
+        height: 30px;
+        .vjs-menu-item {
+          padding: 5px 10px;
+        }
+      }
     }
   }
 

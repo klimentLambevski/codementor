@@ -21,7 +21,7 @@ export function gulpAssets() {
 
 // todo: handle copy without gulp stream
 export function gulpCopy() {
-  return gulp.src(path.join('node_modules', 'semantic-ui-css/themes/**/*'))
+  return gulp.src(path.join('node_modules', 'font-awesome/fonts/**/*'))
     .pipe(gulp.dest(path.join(paths.dist, 'themes')))
 }
 
