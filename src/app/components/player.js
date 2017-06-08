@@ -34,8 +34,11 @@ export const Player = Vue.extend({
 
           'settingsMenuButton': {
             entries : [
+              'playbackRateMenuButton',
+              'quality',
+              'download',
+              'overlay',
               'subtitlesButton',
-              'playbackRateMenuButton'
             ]
           },
 

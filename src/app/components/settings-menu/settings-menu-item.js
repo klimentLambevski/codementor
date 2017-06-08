@@ -12,6 +12,21 @@ const toTitleCase = function(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+const getIcon = (entry) => {
+  switch(entry) {
+    case 'subtitlesButton':
+      return 'fa-cc';
+    case 'playbackRateMenuButton':
+      return 'fa-forward';
+    case 'quality':
+      return 'fa-tv';
+    case 'download':
+      return 'fa-cloud-download';
+    case 'overlay':
+      return 'fa-bookmark'
+  }
+};
+
 /**
  * The specific menu item type for selecting a setting
  *
@@ -26,15 +41,20 @@ class SettingsMenuItem extends MenuItem {
   constructor(player, options, entry) {
     super(player, options);
 
+    this.entry = entry;
+
+    console.log(entry);
+
     const subMenuName = toTitleCase(entry);
 
     const SubMenuComponent = videojs.getComponent(subMenuName);
 
     if (!SubMenuComponent) {
-      throw new Error(`Component ${subMenuName} does not exist`);
+      console.log(`Component ${subMenuName} does not exist`);
+      this.subMenu = null;
+    } else {
+      this.subMenu = new SubMenuComponent(this.player(), options);
     }
-
-    this.subMenu = new SubMenuComponent(this.player(), options);
 
     const update = videojs.bind(this, this.update);
     // To update the sub menu value on click, setTimeout is needed because
@@ -43,11 +63,13 @@ class SettingsMenuItem extends MenuItem {
       setTimeout(update, 0);
     };
 
-    for (let item of this.subMenu.menu.children()) {
-      if (!(item instanceof component)) {
-        continue;
+    if(this.subMenu) {
+      for (let item of this.subMenu.menu.children()) {
+        if (!(item instanceof component)) {
+          continue;
+        }
+        item.on('click', updateAfterTimeout);
       }
-      item.on('click', updateAfterTimeout);
     }
 
     this.update();
@@ -60,27 +82,36 @@ class SettingsMenuItem extends MenuItem {
    * @method createEl
    */
   createEl() {
+
+    console.log(this.entry);
+
     // Hide this component by default
     const el = videojs.dom.createEl('li', {
-      className: 'vjs-menu-item'
+      className: 'vjs-menu-item vjs-settings-menu'
     });
 
     this.settingsSubMenuTitleEl_ = videojs.dom.createEl('div', {
       className: 'vjs-settings-sub-menu-title'
     });
 
-    el.appendChild(this.settingsSubMenuTitleEl_);
+    // el.appendChild(this.settingsSubMenuTitleEl_);
 
     this.settingsSubMenuValueEl_ = videojs.dom.createEl('div', {
       className: 'vjs-settings-sub-menu-value'
     });
 
-    el.appendChild(this.settingsSubMenuValueEl_);
+    // el.appendChild(this.settingsSubMenuValueEl_);
 
     this.settingsSubMenuEl_ = videojs.dom.createEl('div', {
       className: 'vjs-settings-sub-menu vjs-hidden'
     });
 
+
+    this.settingsIconEl_ = videojs.dom.createEl('i', {
+      className: 'vjs-sub-menu-icon fa'
+    });
+
+    el.appendChild(this.settingsIconEl_);
     el.appendChild(this.settingsSubMenuEl_);
 
     return el;
@@ -111,31 +142,38 @@ class SettingsMenuItem extends MenuItem {
    * @method update
    */
   update() {
-    console.log(this.subMenu.controlText_);
-    this.settingsSubMenuTitleEl_.innerHTML = this.subMenu.controlText_ + ':';
-    this.settingsSubMenuEl_.appendChild(this.subMenu.menu.el_);
-    this.settingsSubMenuEl_.appendChild(videojs.dom.createEl('i', {
-      className: 'fa fa-arrow-left'
-    }));
+    // console.log(this.subMenu.controlText_);
+    if(this.subMenu) {
+      this.settingsSubMenuTitleEl_.innerHTML = this.subMenu.controlText_ + ':';
+      this.settingsSubMenuEl_.appendChild(this.subMenu.menu.el_);
 
-    // Playback rate menu button doesn't get a vjs-selected class
-    // or sets options_['selected'] on the selected playback rate.
-    // Thus we get the submenu value based on the labelEl of playbackRateMenuButton
-    if (this.subMenu instanceof playbackRateMenuButton) {
-      console.log(this.subMenu.playbackRates());
-      this.settingsSubMenuValueEl_.innerHTML = this.subMenu.labelEl_.innerHTML;
-    } else {
-      // Loop trough the submenu items to find the selected child
-      for (let subMenuItem of this.subMenu.menu.children_) {
-        if (!(subMenuItem instanceof component)) {
-          continue;
-        }
-        // Set submenu value based on what item is selected
-        if (subMenuItem.options_.selected || subMenuItem.hasClass('vjs-selected')) {
-          this.settingsSubMenuValueEl_.innerHTML = subMenuItem.options_.label;
+      // Playback rate menu button doesn't get a vjs-selected class
+      // or sets options_['selected'] on the selected playback rate.
+      // Thus we get the submenu value based on the labelEl of playbackRateMenuButton
+      if (this.subMenu instanceof playbackRateMenuButton) {
+        console.log(this.subMenu.playbackRates());
+        this.settingsSubMenuValueEl_.innerHTML = this.subMenu.labelEl_.innerHTML;
+      } else {
+        // Loop trough the submenu items to find the selected child
+        for (let subMenuItem of this.subMenu.menu.children_) {
+          if (!(subMenuItem instanceof component)) {
+            continue;
+          }
+          // Set submenu value based on what item is selected
+          if (subMenuItem.options_.selected || subMenuItem.hasClass('vjs-selected')) {
+            this.settingsSubMenuValueEl_.innerHTML = subMenuItem.options_.label;
+          }
         }
       }
     }
+
+    // this.settingsIconEl_.addClass(getIcon(this.entry));
+    videojs.dom.addClass(this.settingsIconEl_, getIcon(this.entry));
+    // this.settingsSubMenuEl_.appendChild(videojs.dom.createEl('i', {
+    //   className: 'fa fa-arrow-left'
+    // }));
+
+
   }
 
   /**

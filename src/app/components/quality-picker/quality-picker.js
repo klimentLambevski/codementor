@@ -6,11 +6,8 @@ function qualityPickerPlugin(options) {
   var tech = this.tech_;
 
 
-  console.log(this, 'sdfsdfsd', this.tech((t) => {
-    console.log(t);
-  }));
+
   setTimeout(() => {
-    console.log('tech -->>>> ', this.tech_)
     this.tech_.on('loadedqualitydata', onQualityData);
 
   },100)
@@ -22,12 +19,11 @@ function qualityPickerPlugin(options) {
     subtitle: 'vjs-icon-subtitles'
   };
 
-  console.log(tech);
   function onQualityData(event, {qualityData, qualitySwitchCallback}) {
 
     var fullscreenToggle = player.controlBar.getChild('fullscreenToggle');
     player.controlBar.removeChild(fullscreenToggle);
-    console.log('on quality data ->>>');
+
     for (var i=0; i < SUPPORTED_TRACKS.length; i++) {
       var track = SUPPORTED_TRACKS[i];
       var name = track + "PickerButton";
@@ -50,7 +46,5 @@ function qualityPickerPlugin(options) {
     }
   }
 }
-
-console.log('sdfsdf');
 
 videojs.registerPlugin('qualityPickerPlugin', qualityPickerPlugin);
